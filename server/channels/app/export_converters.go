@@ -89,6 +89,7 @@ func ImportLineFromUser(user *model.User, exportedPrefs map[string]*string) *imp
 			CollapsePreviews:   exportedPrefs["CollapsePreviews"],
 			MessageDisplay:     exportedPrefs["MessageDisplay"],
 			ColorizeUsernames:  exportedPrefs["ColorizeUsernames"],
+			DisableAnimations:  exportedPrefs["DisableAnimations"],
 			ChannelDisplayMode: exportedPrefs["ChannelDisplayMode"],
 			TutorialStep:       exportedPrefs["TutorialStep"],
 			EmailInterval:      exportedPrefs["EmailInterval"],

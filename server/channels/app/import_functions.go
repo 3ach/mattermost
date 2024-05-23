@@ -712,6 +712,16 @@ func (a *App) importUser(rctx request.CTX, data *imports.UserImportData, dryRun 
 		})
 	}
 
+	if data.DisableAnimations != nil {
+		preferences = append(preferences, model.Preference{
+			UserId:   savedUser.Id,
+			Category: model.PreferenceCategoryDisplaySettings,
+			Name:     model.PreferenceNameDisableAnimations,
+			Value:    *data.DisableAnimations,
+		})
+	}
+
+
 	if data.ChannelDisplayMode != nil {
 		preferences = append(preferences, model.Preference{
 			UserId:   savedUser.Id,

@@ -27,6 +27,7 @@ const (
 	PreferenceNameMessageDisplay          = "message_display"
 	PreferenceNameCollapseConsecutive     = "collapse_consecutive_messages"
 	PreferenceNameColorizeUsernames       = "colorize_usernames"
+	PreferenceNameDisableAnimations       = "disable_animations"
 	PreferenceNameNameFormat              = "name_format"
 	PreferenceNameUseMilitaryTime         = "use_military_time"
 	PreferenceRecommendedNextSteps        = "recommended_next_steps"

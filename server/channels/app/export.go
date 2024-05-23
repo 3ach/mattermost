@@ -60,6 +60,9 @@ var exportablePreferences = map[imports.ComparablePreference]string{{
 	Category: model.PreferenceCategoryDisplaySettings,
 	Name:     "colorize_usernames",
 }: "ChannelDisplayMode", {
+	Category: model.PreferenceCategoryDisplaySettings,
+	Name:     model.PreferenceNameDisableAnimations,
+}: "DisableAnimations", {
 	Category: model.PreferenceCategoryTutorialSteps,
 	Name:     "",
 }: "TutorialStep", {
