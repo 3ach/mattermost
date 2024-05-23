@@ -685,7 +685,7 @@ type AppIface interface {
 	GetEditHistoryForPost(postID string) ([]*model.Post, *model.AppError)
 	GetEmoji(c request.CTX, emojiId string) (*model.Emoji, *model.AppError)
 	GetEmojiByName(c request.CTX, emojiName string) (*model.Emoji, *model.AppError)
-	GetEmojiImage(c request.CTX, emojiId string) ([]byte, string, *model.AppError)
+	GetEmojiImage(c request.CTX, emojiId string, isStatic bool) ([]byte, string, *model.AppError)
 	GetEmojiList(c request.CTX, page, perPage int, sort string) ([]*model.Emoji, *model.AppError)
 	GetFile(rctx request.CTX, fileID string) ([]byte, *model.AppError)
 	GetFileInfo(rctx request.CTX, fileID string) (*model.FileInfo, *model.AppError)

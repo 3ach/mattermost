@@ -247,7 +247,7 @@ func (a *App) GetMultipleEmojiByName(c request.CTX, names []string) ([]*model.Em
 	return emoji, nil
 }
 
-func (a *App) GetEmojiImage(c request.CTX, emojiId string) ([]byte, string, *model.AppError) {
+func (a *App) GetEmojiImage(c request.CTX, emojiId string, isStatic bool) ([]byte, string, *model.AppError) {
 	_, storeErr := a.Srv().Store().Emoji().Get(c, emojiId, true)
 	if storeErr != nil {
 		var nfErr *store.ErrNotFound
@@ -267,6 +267,22 @@ func (a *App) GetEmojiImage(c request.CTX, emojiId string) ([]byte, string, *mod
 	_, imageType, err := image.DecodeConfig(bytes.NewReader(img))
 	if err != nil {
 		return nil, "", model.NewAppError("getEmojiImage", "api.emoji.get_image.decode.app_error", nil, "", http.StatusInternalServerError).Wrap(err)
+	}
+
+	if isStatic && imageType == "gif" {
+		frame, err := gif.Decode(bytes.NewReader(img))
+		if err != nil {
+			return nil, "", model.NewAppError("getEmojiImage", "api.emoji.get_image.decode.app_error", nil, "", http.StatusInternalServerError).Wrap(err)
+		}
+
+		frozen := &bytes.Buffer{}
+		err = gif.Encode(frozen, frame, nil)
+
+		if err != nil {
+			return nil, "", model.NewAppError("getEmojiImage", "api.emoji.get_image.decode.app_error", nil, "", http.StatusInternalServerError).Wrap(err)
+		}
+
+		img = frozen.Bytes()
 	}
 
 	return img, imageType, nil

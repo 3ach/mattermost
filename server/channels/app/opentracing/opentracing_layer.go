@@ -6424,7 +6424,7 @@ func (a *OpenTracingAppLayer) GetEmojiByName(c request.CTX, emojiName string) (*
 	return resultVar0, resultVar1
 }
 
-func (a *OpenTracingAppLayer) GetEmojiImage(c request.CTX, emojiId string) ([]byte, string, *model.AppError) {
+func (a *OpenTracingAppLayer) GetEmojiImage(c request.CTX, emojiId string, isStatic bool) ([]byte, string, *model.AppError) {
 	origCtx := a.ctx
 	span, newCtx := tracing.StartSpanWithParentByContext(a.ctx, "app.GetEmojiImage")
 
@@ -6436,7 +6436,7 @@ func (a *OpenTracingAppLayer) GetEmojiImage(c request.CTX, emojiId string) ([]by
 	}()
 
 	defer span.Finish()
-	resultVar0, resultVar1, resultVar2 := a.app.GetEmojiImage(c, emojiId)
+	resultVar0, resultVar1, resultVar2 := a.app.GetEmojiImage(c, emojiId, isStatic)
 
 	if resultVar2 != nil {
 		span.LogFields(spanlog.Error(resultVar2))

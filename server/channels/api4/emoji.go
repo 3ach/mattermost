@@ -30,6 +30,7 @@ func (api *API) InitEmoji() {
 	api.BaseRoutes.Emoji.Handle("", api.APISessionRequired(getEmoji)).Methods("GET")
 	api.BaseRoutes.EmojiByName.Handle("", api.APISessionRequired(getEmojiByName)).Methods("GET")
 	api.BaseRoutes.Emoji.Handle("/image", api.APISessionRequiredTrustRequester(getEmojiImage)).Methods("GET")
+	api.BaseRoutes.Emoji.Handle("/image/static", api.APISessionRequiredTrustRequester(getEmojiImageStatic)).Methods("GET")
 }
 
 func createEmoji(c *Context, w http.ResponseWriter, r *http.Request) {
@@ -272,7 +273,7 @@ func getEmojisByNames(c *Context, w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func getEmojiImage(c *Context, w http.ResponseWriter, r *http.Request) {
+func getEmojiImageInternal(c *Context, w http.ResponseWriter, r *http.Request, isStatic bool) {
 	c.RequireEmojiId()
 	if c.Err != nil {
 		return
@@ -283,7 +284,7 @@ func getEmojiImage(c *Context, w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	image, imageType, err := c.App.GetEmojiImage(c.AppContext, c.Params.EmojiId)
+	image, imageType, err := c.App.GetEmojiImage(c.AppContext, c.Params.EmojiId, isStatic)
 	if err != nil {
 		c.Err = err
 		return
@@ -292,6 +293,15 @@ func getEmojiImage(c *Context, w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "image/"+imageType)
 	w.Header().Set("Cache-Control", "max-age=2592000, private")
 	w.Write(image)
+}
+
+
+func getEmojiImage(c *Context, w http.ResponseWriter, r *http.Request) {
+	getEmojiImageInternal(c, w, r, false);
+}
+
+func getEmojiImageStatic(c *Context, w http.ResponseWriter, r *http.Request) {
+	getEmojiImageInternal(c, w, r, true);
 }
 
 func searchEmojis(c *Context, w http.ResponseWriter, r *http.Request) {

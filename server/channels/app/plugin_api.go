@@ -827,7 +827,7 @@ func (api *PluginAPI) UploadFile(data []byte, channelID string, filename string)
 }
 
 func (api *PluginAPI) GetEmojiImage(emojiId string) ([]byte, string, *model.AppError) {
-	return api.app.GetEmojiImage(api.ctx, emojiId)
+	return api.app.GetEmojiImage(api.ctx, emojiId, false)
 }
 
 func (api *PluginAPI) GetTeamIcon(teamID string) ([]byte, *model.AppError) {
