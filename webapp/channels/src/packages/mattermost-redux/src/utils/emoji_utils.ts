@@ -13,7 +13,7 @@ export function isSystemEmoji(emoji: Emoji): emoji is SystemEmoji {
     return !('id' in emoji);
 }
 
-export function getEmojiImageUrl(emoji: Emoji): string {
+export function getEmojiImageUrl(emoji: Emoji, static: bool): string {
     // If its the mattermost custom emoji
     if (!isSystemEmoji(emoji) && emoji.id === 'mattermost') {
         return Client4.getSystemEmojiImageUrl('mattermost');
@@ -26,7 +26,12 @@ export function getEmojiImageUrl(emoji: Emoji): string {
         return Client4.getSystemEmojiImageUrl(filename);
     }
 
-    return Client4.getEmojiRoute(emoji.id) + '/image';
+    if (static) {
+    	return Client4.getEmojiRoute(emoji.id) + '/image/static';
+    } else {
+    	return Client4.getEmojiRoute(emoji.id) + '/image';
+    }
+
 }
 
 export function getEmojiName(emoji: Emoji): string {

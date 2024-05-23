@@ -43,6 +43,7 @@ function getDisplayStateFromProps(props: Props) {
         channelDisplayMode: props.channelDisplayMode,
         messageDisplay: props.messageDisplay,
         colorizeUsernames: props.colorizeUsernames,
+	disableAnimations: props.disableAnimations,
         collapseDisplay: props.collapseDisplay,
         collapsedReplyThreads: props.collapsedReplyThreads,
         linkPreviewDisplay: props.linkPreviewDisplay,
@@ -118,6 +119,7 @@ type Props = {
     channelDisplayMode: string;
     messageDisplay: string;
     colorizeUsernames: string;
+    disableAnimations: string;
     collapseDisplay: string;
     collapsedReplyThreads: string;
     collapsedReplyThreadsAllowUserPreference: boolean;
@@ -144,6 +146,7 @@ type State = {
     channelDisplayMode: string;
     messageDisplay: string;
     colorizeUsernames: string;
+    disableAnimations: string;
     collapseDisplay: string;
     collapsedReplyThreads: string;
     linkPreviewDisplay: string;
@@ -276,6 +279,12 @@ export default class UserSettingsDisplay extends React.PureComponent<Props, Stat
             name: Preferences.COLORIZE_USERNAMES,
             value: this.state.colorizeUsernames,
         };
+        const disableAnimationsPreference = {
+            user_id: userId,
+            category: Preferences.CATEGORY_DISPLAY_SETTINGS,
+            name: Preferences.DISABLE_ANIMATIONS,
+            value: this.state.disableAnimations,
+        };
         const collapseDisplayPreference = {
             user_id: userId,
             category: Preferences.CATEGORY_DISPLAY_SETTINGS,
@@ -321,6 +330,7 @@ export default class UserSettingsDisplay extends React.PureComponent<Props, Stat
             availabilityStatusOnPostsPreference,
             oneClickReactionsOnPostsPreference,
             colorizeUsernamesPreference,
+            disableAnimationsPreference,
         ];
 
         this.trackChangeIfNecessary(collapsedReplyThreadsPreference, this.props.collapsedReplyThreads);
@@ -1016,6 +1026,36 @@ export default class UserSettingsDisplay extends React.PureComponent<Props, Stat
             },
         });
 
+        const disableAnimationsSection  = this.createSection({
+            section: Preferences.DISABLE_ANIMATIONS,
+            display: 'disableAnimations',
+            value: this.state.disableAnimations,
+            defaultDisplay: 'false',
+            title: {
+                id: t('user.settings.display.disableAnimations'),
+                message: 'Animated emoji',
+            },
+            firstOption: {
+                value: 'false',
+                radionButtonText: {
+                    id: t('user.settings.disableAnimations.enabled'),
+                    message: 'Show animated emoji',
+                },
+            },
+            secondOption: {
+                value: 'true',
+                radionButtonText: {
+                    id: t('user.settings.disableAnimations.disabled'),
+                    message: 'Show static versions of animated emoji',
+                },
+            },
+            description: {
+                id: t('user.settings.display.disableAnimationsDescription'),
+                message: 'Optionally replace animated emoji with static versions',
+            },
+        });
+
+
         let languagesSection;
         const userLocale = this.props.userLocale;
         const localeName = getLanguageInfo(userLocale).name;
@@ -1132,6 +1172,7 @@ export default class UserSettingsDisplay extends React.PureComponent<Props, Stat
                     {linkPreviewSection}
                     {collapseSection}
                     {messageDisplaySection}
+		    {disableAnimationsSection}
                     {clickToReply}
                     {channelDisplayModeSection}
                     {oneClickReactionsOnPostsSection}
